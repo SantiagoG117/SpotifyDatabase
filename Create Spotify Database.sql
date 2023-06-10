@@ -1,6 +1,5 @@
 USE[Spotify Database]
 
-
 -- Strong tables
 CREATE TABLE GENRES (
 	-- ColumnName	DataType		OptionalConstraints	
@@ -17,6 +16,7 @@ CREATE TABLE ARTISTS (
 CREATE TABLE USERS (
 	-- ColumnName	DataType		OptionalConstraints
 	UserID			INT				PRIMARY KEY IDENTITY(1,1),
+	Password		VARCHAR(25)		NOT NULL,
 	FirstName		VARCHAR(50)		NOT NULL,
 	LastName		VARCHAR(50)		NOT NULL
 );
@@ -32,7 +32,7 @@ CREATE TABLE ALBUMS (
 	-- ColumnName	DataType					OptionalConstraints
 	AlbumID			INT							PRIMARY KEY IDENTITY(1,1),
 	AlbumName		VARCHAR(50)					NOT NULL,
-	YearOfRelease	DATE						NOT NULL,
+	DateOfRelease	DATE						NOT NULL,
 
 	-- Foreign Keys
 	ArtistID		INT							NOT NULL,
@@ -63,46 +63,24 @@ CREATE TABLE ALBUM_SONGS(
 );
 
 CREATE TABLE SINGLE_SONGS(
-	-- ColumnName	DataType		OptionalConstraints
+	-- ColumnName	DataType						OptionalConstraints
 	SingleID		INT								PRIMARY KEY IDENTITY(1,1),
 	SingleName		VARCHAR(50)						NOT NULL,
-	YearOfRelease	DATE							NOT NULL,
+	DateOfRelease	DATE							NOT NULL,
 
 	-- Foreign Key
+	ArtistID		INT								NOT NULL,
+	CONSTRAINT		FK_SINGLE_SONGS_ARTISTS			FOREIGN KEY(ArtistID)
+		REFERENCES	ARTISTS(ArtistID)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION,
+
 	RecordLabelID	INT								NOT NULL,
 	CONSTRAINT		FK_SINGLE_SONGS_RECORD_LABELS	FOREIGN KEY(RecordLabelID)
 		REFERENCES	RECORD_LABELS(RecordLabelID)
 			ON UPDATE	CASCADE -- The rights on a given single may change over time.
 			ON DELETE	NO ACTION
 	);
-
-CREATE TABLE EPs(
-	-- ColumnName	DataType		OptionalConstraints
-	EPID			INT						PRIMARY KEY IDENTITY(1,1),
-	EPName			VARCHAR(50)				NOT NULL,
-	YearOfRelease	DATE					NOT NULL,
-	
-	--Foreign Key
-	RecordLabelID	INT						NOT NULL
-	CONSTRAINT		FK_EPs_RECORD_LABELS	FOREIGN KEY(RecordLabelID)
-		REFERENCES	RECORD_LABELS(RecordLabelID)
-			ON UPDATE CASCADE --The rights on a given EPs may change over time
-			ON DELETE NO ACTION
-	);
-
-CREATE TABLE EPsSONGS(
-	-- ColumnName	DataType		OptionalConstraints
-	EPsSongID		INT				PRIMARY KEY IDENTITY(1,1),
-	Name			VARCHAR(50)		NOT NULL,
-	Duration		CHAR(5)			NOT NULL,
-
-	-- Foreign Key
-	EPID			INT				NOT NULL,
-	CONSTRAINT		FK_EPsSongs_EPs	FOREIGN KEY(EPID)
-		REFERENCES	EPs(EPID)
-			ON UPDATE NO ACTION
-			ON DELETE NO ACTION
-)
 
 CREATE TABLE PLAYLISTS (
 	-- ColumnName	DataType		OptionalConstraints
@@ -138,48 +116,6 @@ CREATE TABLE GENRES_ARTISTS(
 			ON DELETE NO ACTION
 );
 
-CREATE TABLE ARTIST_SINGLE(
-	-- ColumnName	DataType			OptionalConstraints	
-	ArtistID		INT					NOT NULL,
-	SingleID		INT					NOT NULL,
-
-	-- Create the compound PK:
-	PRIMARY KEY(ArtistID, SingleID),
-
-	-- Foreign Keys
-	CONSTRAINT fk_ARTISTS_SINGLE_SONGS	FOREIGN KEY(ArtistID)
-		REFERENCES ARTISTS(ArtistID)
-			ON UPDATE NO ACTION
-			ON DELETE NO ACTION,
-
-	CONSTRAINT fk_SINGLE_SONGS_ARTISTS	FOREIGN KEY(SingleID)
-		REFERENCES SINGLE_SONGS(SingleID)
-			ON UPDATE NO ACTION
-			ON DELETE NO ACTION
-
-);
-
-CREATE TABLE ARTIST_EPs(
--- ColumnName	DataType			OptionalConstraints	
-	ArtistID		INT					NOT NULL,
-	EPID			INT					NOT NULL,
-	
-
-	-- Create the compound PK:
-	PRIMARY KEY(ArtistID, EPID),
-
-	-- Foreign Keys
-	CONSTRAINT fk_ARTISTS_EPs			FOREIGN KEY(ArtistID)
-		REFERENCES ARTISTS(ArtistID)
-			ON UPDATE NO ACTION
-			ON DELETE NO ACTION,
-
-	CONSTRAINT fk_EPs_ARTISTS			FOREIGN KEY(EPID)
-		REFERENCES EPs(EPID)
-			ON UPDATE NO ACTION
-			ON DELETE NO ACTION
-);
-
 CREATE TABLE PLAYLIST_ALBUM_SONGS(
 	-- ColumnName	DataType			OptionalConstraints	
 	PlaylistID		INT					NOT NULL,
@@ -194,7 +130,7 @@ CREATE TABLE PLAYLIST_ALBUM_SONGS(
 	FOREIGN KEY	(PlaylistID)
 	REFERENCES PLAYLISTS (PlaylistID)
 		ON UPDATE NO ACTION
-		ON DELETE CASCADE, --If a Playlist is removed all its songs should be removed from the table
+		ON DELETE CASCADE, --If a Playlist is removed all its album_songs should be removed from the table
 
 	CONSTRAINT	fk_Album_Song_ID_PlaylistID
 	FOREIGN KEY	(Album_SongID)	
@@ -211,6 +147,7 @@ CREATE TABLE PLAYLIST_SINGLES(
 
 	-- Create the compound PK:
 	PRIMARY KEY(PlaylistID, SingleID),
+
 	-- Foreign Keys
 	CONSTRAINT fk_PlaylistID_SingleID
 	FOREIGN KEY(PlaylistID)
@@ -221,28 +158,6 @@ CREATE TABLE PLAYLIST_SINGLES(
 	CONSTRAINT fk_SingleID_PlaylistID
 	FOREIGN KEY(SingleID)
 	REFERENCES SINGLE_SONGS(SingleID)
-		ON UPDATE NO ACTION
-		ON DELETE NO ACTION
-);
-
-CREATE TABLE PLAYLISTS_EPsSONGS (
-	-- ColumnName	DataType			OptionalConstraints	
-	PlaylistID		INT					NOT NULL,
-	EPsSongID		INT					NOT NULL,
-	DateAdded		DATE				NOT NULL,
-
-	-- Create the compound PK:
-	PRIMARY KEY(PlaylistID, EPsSongID),
-	-- Foreign Keys
-	CONSTRAINT fk_PlaylistID_EPsSongID
-	FOREIGN KEY(PlaylistID)
-	REFERENCES PLAYLISTS(PlaylistID)
-		ON UPDATE NO ACTION
-		ON DELETE CASCADE,  -- If a Playlist is removed all its songs should be removed from the table
-	
-	CONSTRAINT fk_EPsSongID_PlaylistID
-	FOREIGN KEY(EPsSongID)
-	REFERENCES EPsSONGS(EPsSongID)
 		ON UPDATE NO ACTION
 		ON DELETE NO ACTION
 );
