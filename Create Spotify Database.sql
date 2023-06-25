@@ -16,6 +16,7 @@ CREATE TABLE ARTISTS (
 CREATE TABLE USERS (
 	-- ColumnName	DataType		OptionalConstraints
 	UserID			INT				PRIMARY KEY IDENTITY(1,1),
+	UserName		Varchar(50)		UNIQUE NOT NULL,
 	Password		VARCHAR(25)		NOT NULL,
 	FirstName		VARCHAR(50)		NOT NULL,
 	LastName		VARCHAR(50)		NOT NULL
@@ -44,7 +45,7 @@ CREATE TABLE ALBUMS (
 	RecordLabelID	INT							NOT NULL
 	CONSTRAINT		FK_ALBUMS_RECORD_LABELS		FOREIGN KEY(RecordLabelID)
 		REFERENCES	RECORD_LABELS(RecordLabelID)
-		ON UPDATE	CASCADE --The rights on a given album may change over time.
+		ON UPDATE	CASCADE 
 		ON DELETE	NO ACTION
 );
 
@@ -83,8 +84,9 @@ CREATE TABLE SINGLE_SONGS(
 	);
 
 CREATE TABLE PLAYLISTS (
-	-- ColumnName	DataType		OptionalConstraints
+	-- ColumnName	DataType					OptionalConstraints
 	PlaylistID		INT							PRIMARY KEY IDENTITY(1,1),
+	PlaylistName	VARCHAR (50)				NOT NULL,
 	DateCreated		DATE						NOT NULL,
 
 	-- Foreign Keys

@@ -2,24 +2,24 @@ use[Spotify Database];
 
 INSERT INTO ARTISTS (Name)
 VALUES
-	('Elvis Presley'),
-	('The Beatles'),
-	('Michael Jackson'),
-	('Bob Dylan'),
-	('Jimi Hendrix'),
-	('Aretha Franklin'),
-	('Queen'),
-	('David Bowie'),
-	('The Rolling Stones'),
-	('Johnny Cash'),
-	('Ella Fitzgerald'),
-	('James Brown'),
-	('Led Zeppelin'),
-	('The Supremes'),
-	('Ray Charles'),
-	('Nat King Cole'),
-	('Stevie Wonder'),
-	('Marvin Gaye');
+	('Elvis Presley'), -- 1
+	('The Beatles'), -- 2
+	('Michael Jackson'),-- 3
+	('Bob Dylan'), -- 4
+	('Jimi Hendrix'), -- 5
+	('Aretha Franklin'), -- 6
+	('Queen'), -- 7
+	('David Bowie'), -- 8
+	('The Rolling Stones'), -- 9
+	('Johnny Cash'), -- 10
+	('Ella Fitzgerald'), -- 11
+	('James Brown'), -- 12
+	('Led Zeppelin'), -- 13
+	('The Supremes'), -- 14
+	('Ray Charles'), -- 15
+	('Nat King Cole'), -- 16
+	('Stevie Wonder'), -- 17
+	('Marvin Gaye'); -- 18
 
 INSERT INTO GENRES (Name)
 VALUES
@@ -42,7 +42,7 @@ VALUES
 	(1, 7), -- Queen
 	(1, 8), -- David Bowie
 	(1, 9), -- The Rolling Stones
-	(1, 12), -- Led Zeppelin
+	(1, 12), -- James Brown
 
 	-- Pop
 	(2, 1), -- Elvis Presley
@@ -66,15 +66,15 @@ VALUES
 	(6, 18), -- Marvin Gaye
 
 	-- Funk
-	(7, 12), -- Led Zeppelin
+	(7, 12), -- James Brown
 
 	-- Reggae
-	(8, 11), -- Johnny Cash
+	(8, 11), -- Ella Fitzgerald
 
 	-- Jazz
-	(9, 11), -- Johnny Cash
-	(9, 12), -- Led Zeppelin
-	(9, 13), -- The Supremes
+	(9, 11), -- Ella Fitzgerald
+	(9, 12), -- James Brown
+	(9, 13), -- Led Zeppelin
 	(9, 15), -- Ray Charles
 	(9, 16), -- Nat King Cole
 
@@ -83,7 +83,7 @@ VALUES
 
 INSERT INTO RECORD_LABELS (Name)
 VALUES
-	('Sony Music Entretainment'), --1
+	('Syco Entretainment'), --1
 	('RCA Victor'),--2
 	('Apple Corps'),--3
 	('MJJ Productions Inc'),--4
@@ -99,9 +99,6 @@ VALUES
 	('Big Machine Label Group'), --14
 	('Tangerine Records') --15
 ;
-
-
-
 
 -- Albums:
 
@@ -690,7 +687,6 @@ VALUES ('Hey Porter', '02:15',30),
        ('Sunday Morning Coming Down', '04:08',30),
        ('Man in Black', '02:52',30),
        ('One Piece at a Time', '04:03',30),
-       ('Highwayman (with Waylon Jennings, Willie Nelson, Kris Kristofferson)', '03:03',30),
        ('The Wanderer (with U2)', '04:44',30),
        ('Delia''s Gone', '02:18',30),
        ('Rusty Cage', '02:50',30);
@@ -742,7 +738,6 @@ VALUES ('Summertime', '03:58', 32),
        ('What You Want Wid Bess?', '03:07', 32),
        ('A Woman Is a Sometime Thing', '04:47', 32),
        ('Oh Doctor Jesus', '02:02', 32),
-       ('Medley: Here Come De Honey Man / Crab Man / Oh, Dey''s So Fresh and Fine', '03:37', 32),
        ('There''s a Boat Dat''s Leavin'' Soon for New York', '04:53', 32),
        ('Oh Lawd, I''m on My Way', '02:55', 32);
 
